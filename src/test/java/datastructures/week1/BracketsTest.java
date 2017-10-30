@@ -10,7 +10,13 @@ public class BracketsTest {
     @DataProvider
     private Object[][] textProvider() {
             return new Object[][]{
-                    {"[]", "Success"}
+                    {"[]", "Success"},
+                    {"{}[]", "Success"},
+                    {"[()]", "Success"},
+                    {"(())", "Success"},
+                    {"{[]}()", "Success"},
+                    {"{", "1"},
+                    {"{[}", "3"},
         };
     }
 
@@ -20,7 +26,7 @@ public class BracketsTest {
         Brackets brackets = new Brackets();
 
         // When
-        String result = brackets.check(text);
+        String result = brackets.isBalanced(text);
 
         // Then
         assertEquals(result, expected);

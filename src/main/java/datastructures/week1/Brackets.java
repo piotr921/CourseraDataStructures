@@ -1,58 +1,57 @@
 package datastructures.week1;
 
-public class Brackets {
+import java.util.Stack;
 
-    public String check(String text) {
-        return "";
-    }
+class Brackets {
 
-    enum Type {
-        CIRCLE {
-            @Override
-            boolean isOpenChar(char c) {
-                return c == '(';
-            }
+    class OpenBrace {
 
-            @Override
-            boolean isClosedChar(char c) {
-                return c == ')';
-            }
-        },
-        SQUARE {
-            @Override
-            boolean isOpenChar(char c) {
-                return c == '[';
-            }
+        private Character symbol;
+        Integer place;
 
-            @Override
-            boolean isClosedChar(char c) {
-                return c == ']';
-            }
-        },
-        CURLY {
-            @Override
-            boolean isOpenChar(char c) {
-                return c == '{';
-            }
+        public OpenBrace() {
+            this.symbol = ' ';
+            this.place = -1;
+        }
 
-            @Override
-            boolean isClosedChar(char c) {
-                return c == '}';
-            }
-        };
+        OpenBrace(Character symbol, int place) {
+            this.symbol = symbol;
+            this.place = place;
+        }
 
-        abstract boolean isOpenChar(char c);
-        abstract boolean isClosedChar(char c);
-        Type selectType(char c) {
-            switch (c){
-                case '(':
-                    return CURLY;
-                    break;
-                case ')':
-                    return CURLY;
-                    break;
+        Character getSymbol() {
+            return symbol;
+        }
 
-            }
+        Integer getPlace() {
+            return place;
         }
     }
+
+    String isBalanced(String text) {
+        Stack<OpenBrace> openBrackets = new Stack<>();
+        int index = 1;
+        for (Character c : text.toCharArray()) {
+            if (c.equals('(') || c.equals('{') || c.equals('[')) {
+                openBrackets.push(new OpenBrace(c, index));
+            } else {
+                if (openBrackets.empty()) {
+                    return selectMessage(false, openBrackets);
+                }
+                Character top = openBrackets.pop().getSymbol();
+                if ((top.equals('(') && !c.equals(')')) ||
+                    (top.equals('{') && !c.equals('}')) ||
+                    (top.equals('[') && !c.equals(']'))) {
+                    return selectMessage(false, openBrackets);
+                }
+            }
+            index++;
+        }
+        return selectMessage(openBrackets.isEmpty(), openBrackets);
+    }
+
+    private String selectMessage(boolean isBalanced, Stack<OpenBrace> stack) {
+        return isBalanced ? "Success" : stack.peek().getPlace().toString();
+    }
+
 }
