@@ -7,12 +7,7 @@ class Brackets {
     class OpenBrace {
 
         private Character symbol;
-        Integer place;
-
-        public OpenBrace() {
-            this.symbol = ' ';
-            this.place = -1;
-        }
+        private Integer place;
 
         OpenBrace(Character symbol, int place) {
             this.symbol = symbol;
@@ -34,15 +29,15 @@ class Brackets {
         for (Character c : text.toCharArray()) {
             if (c.equals('(') || c.equals('{') || c.equals('[')) {
                 openBrackets.push(new OpenBrace(c, index));
-            } else {
+            } else if (c.equals(')') || c.equals('}') || c.equals(']')) {
                 if (openBrackets.empty()) {
-                    return selectMessage(false, openBrackets);
+                    return index + "";
                 }
                 Character top = openBrackets.pop().getSymbol();
                 if ((top.equals('(') && !c.equals(')')) ||
                     (top.equals('{') && !c.equals('}')) ||
                     (top.equals('[') && !c.equals(']'))) {
-                    return selectMessage(false, openBrackets);
+                    return index + "";
                 }
             }
             index++;

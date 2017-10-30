@@ -17,6 +17,8 @@ public class BracketsTest {
                     {"{[]}()", "Success"},
                     {"{", "1"},
                     {"{[}", "3"},
+                    {"foo(bar)", "Success"},
+                    {"foo(bar[i)", "10"},
         };
     }
 
